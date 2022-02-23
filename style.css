@@ -1,0 +1,93 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,900;1,300&display=swap");
+
+* {
+	box-sizing: border-box;
+	padding: 0;
+	margin: 0;
+	font-family: "Roboto", sans-serif;
+}
+
+body {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+	background-color: rgb(218, 232, 236);
+}
+
+.unselectable {
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.btn {
+	background-color: azure;
+	color: black;
+	padding: 22px 22px;
+	text-align: center;
+	cursor: pointer;
+	display: inline-block;
+}
+
+.btn:hover {
+	opacity: 0.8;
+}
+
+.btn:active {
+	opacity: 1;
+}
+
+.bord-rad-10 {
+	border-radius: 10px;
+}
+
+.main-border {
+	border: 1px solid rgb(58, 145, 133);
+}
+
+.flex-grow-1 {
+	flex-grow: 1;
+}
+
+.primary-bg {
+	background-color: rgb(145, 218, 193);
+}
+
+#calc-container {
+	display: flex;
+	flex-direction: column;
+	width: 300px;
+	border-radius: 5px;
+	height: 400px;
+}
+
+#display-container {
+	background-color: rgb(99, 231, 198);
+	text-align: end;
+	padding: 16px;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	height: 100px;
+	display: flex;
+	flex-direction: column;
+	justify-content: end;
+}
+
+#display-container > * {
+	height: 20px;
+}
+
+#btns-container {
+	display: flex;
+	flex-wrap: wrap;
+	background-color: rgb(99, 231, 198);
+	flex-grow: 1;
+}
+
+#btns-container > .btn {
+	flex-basis: 25%;
+	border-radius: 6px;
+}

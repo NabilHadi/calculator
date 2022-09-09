@@ -87,13 +87,18 @@ function backspaceOperation() {
 
 function otherOperations(operation) {
   const textLength = display.textContent.length;
-  if (
-    textLength === 0 ||
-    isOperator(display.textContent[textLength - 1]) ||
-    (operation === "." && display.textContent.includes("."))
-  )
+  if (textLength === 0 || isOperator(display.textContent[textLength - 1])) {
     return;
-  display.textContent += operation;
+  } else if (operation === ".") {
+    let op = display.textContent.split(/(\*|\+|\/|-)/gi);
+    if (op[op.length - 1].includes(".")) {
+      return;
+    } else {
+      display.textContent += operation;
+    }
+  } else {
+    display.textContent += operation;
+  }
 }
 
 function functionButtonClickHandler(e) {

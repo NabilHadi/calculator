@@ -147,5 +147,7 @@ window.addEventListener("keydown", (e) => {
     equalOperation();
   } else if (key === ".") {
     otherOperations(key);
+  } else if (key === "Backspace") {
+    backspaceOperation();
   }
 });

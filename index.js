@@ -87,6 +87,8 @@ function functionButtonClickHandler(e) {
       return total;
     });
     display.textContent = Math.round(Number(result) * 1000) / 1000;
+  } else if (operation === "backspace") {
+    display.textContent = display.textContent.slice(0, -1);
   } else {
     const textLength = display.textContent.length;
     if (

@@ -86,13 +86,13 @@ function functionButtonClickHandler(e) {
       }
       return total;
     });
-    display.textContent = result;
+    display.textContent = Math.round(Number(result) * 1000) / 1000;
   } else {
     const textLength = display.textContent.length;
     if (
       textLength === 0 ||
       isOperator(display.textContent[textLength - 1]) ||
-      display.textContent[textLength - 1] === "."
+      (operation === "." && display.textContent.includes("."))
     )
       return;
     display.textContent += operation;

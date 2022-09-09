@@ -62,6 +62,10 @@ function functionButtonClickHandler(e) {
 
     let ops2 = [];
     for (let i = 0; i < ops.length; i += 2) {
+      if (Number.isNaN(Number(ops[i]))) {
+        display.textContent = "Error";
+        return;
+      }
       if (ops[i + 1] === operators.add || ops[i + 1] === operators.subtract) {
         ops2.push(ops[i], ops[i + 1]);
       } else {

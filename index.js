@@ -32,8 +32,7 @@ const display = document.querySelector(".display");
 display.textContent = "";
 
 function digitButtonClickHandler(e) {
-  const currContent = Number(display.textContent);
-  if (currContent === 0) {
+  if (display.textContent.trim() === "0") {
     display.textContent = e.target.dataset.digit;
   } else {
     display.textContent += e.target.dataset.digit;
@@ -90,7 +89,11 @@ function functionButtonClickHandler(e) {
     display.textContent = result;
   } else {
     const textLength = display.textContent.length;
-    if (textLength === 0 || isOperator(display.textContent[textLength - 1]))
+    if (
+      textLength === 0 ||
+      isOperator(display.textContent[textLength - 1]) ||
+      display.textContent[textLength - 1] === "."
+    )
       return;
     display.textContent += operation;
   }

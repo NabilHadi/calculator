@@ -28,10 +28,12 @@ function operate(operator = "+", a, b) {
       return "Unknown";
   }
 }
-
-let storedNum = null;
+let firstNum = "";
+let secondNum = "";
+let shouldClearDisplay = false;
 let currentOperator = null;
 let displayValue = "0";
+
 const display = document.querySelector(".display");
 
 function updateDisplay() {
@@ -39,7 +41,9 @@ function updateDisplay() {
 }
 
 function clearState() {
-  storedNum = null;
+  firstNum = "";
+  secondNum = "";
+  shouldClearDisplay = false;
   currentOperator = null;
   displayValue = "0";
   updateDisplay();
@@ -55,36 +59,45 @@ function backspaceHandler() {
   updateDisplay();
 }
 
+function evaluate() {
+  firstNum = operate(currentOperator, Number(firstNum), Number(secondNum));
+  displayValue = firstNum;
+  secondNum = "";
+  updateDisplay();
+}
+
 function calcBtnClickHandler(event) {
   const btnValue = event.target.dataset.value;
   console.log(btnValue);
   if (event.target.dataset.type === "digit") {
-    if (displayValue == "0") {
+    if (displayValue == "0" || shouldClearDisplay) {
       displayValue = btnValue;
+      shouldClearDisplay = false;
     } else {
       displayValue += btnValue;
     }
     updateDisplay();
   } else if (event.target.dataset.type === "operator") {
-    if (!currentOperator) {
+    if (firstNum === "") {
+      firstNum = displayValue;
       currentOperator = btnValue;
-      storedNum = displayValue;
       displayValue = "0";
       updateDisplay();
-    } else if (storedNum) {
+    } else if (secondNum === "" && currentOperator) {
       if (Number(displayValue) === 0 && currentOperator === "/") {
+        clearState();
         display.textContent = "OOPS! division by 0";
         return;
       }
-      displayValue = operate(
-        currentOperator,
-        Number(storedNum),
-        Number(displayValue)
-      );
-      updateDisplay();
-      storedNum = displayValue;
-      displayValue = "0";
+      secondNum = displayValue;
+      console.log({ secondNum, firstNum });
+      evaluate();
       currentOperator = btnValue;
+      shouldClearDisplay = true;
+    } else if (secondNum === "") {
+      secondNum = displayValue;
+      currentOperator = btnValue;
+      shouldClearDisplay = true;
     }
   } else if (btnValue === "clear") {
     clearState();
@@ -95,14 +108,10 @@ function calcBtnClickHandler(event) {
       return;
     }
     if (!currentOperator) return;
-    displayValue = operate(
-      currentOperator,
-      Number(storedNum),
-      Number(displayValue)
-    );
-    updateDisplay();
-    storedNum = displayValue;
+    secondNum = displayValue;
+    evaluate();
     currentOperator = null;
+    shouldClearDisplay = true;
   } else if (btnValue === "backspace") {
     backspaceHandler();
   }

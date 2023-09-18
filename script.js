@@ -37,11 +37,38 @@ const addBtn = document.querySelector("[data-value='+']");
 const subtractBtn = document.querySelector("[data-value='-']");
 const multiplyBtn = document.querySelector("[data-value='*']");
 const divideBtn = document.querySelector("[data-value='/']");
+const equalBtn = document.querySelector("[data-value='=']");
+const clearBtn = document.querySelector("[data-value='clear']");
 
 addBtn.addEventListener("click", operatorClickHandler);
 subtractBtn.addEventListener("click", operatorClickHandler);
 multiplyBtn.addEventListener("click", operatorClickHandler);
 divideBtn.addEventListener("click", operatorClickHandler);
+
+equalBtn.addEventListener("click", (e) => {
+  if (num1 == null || currentOperator == null) return;
+  num2 = displayValue;
+  if (currentOperator == "/" && num2 == 0) {
+    clearState();
+    displayDiv.textContent = "Divide by 0 SMH";
+    return;
+  }
+  let result = operate(currentOperator, num1, num2);
+  populateDisplay(result);
+  num1 = null;
+  num2 = null;
+  clearDisplay = true;
+});
+
+clearBtn.addEventListener("click", clearState);
+
+function clearState() {
+  num1 = null;
+  num2 = null;
+  currentOperator = null;
+  clearDisplay = true;
+  populateDisplay(0);
+}
 
 const numbersBtns = document.querySelectorAll(".number-btn");
 numbersBtns.forEach((numBtn) => {
@@ -58,20 +85,26 @@ function numBtnClickHandler(e) {
 }
 
 function operatorClickHandler(e) {
-  currentOperator = e.target.dataset.value;
   if (num1 == null) {
     num1 = displayValue;
   } else {
     num2 = displayValue;
+    if (currentOperator == "/" && num2 == 0) {
+      clearState();
+      displayDiv.textContent = "Divide by 0 SMH";
+      return;
+    }
     let result = operate(currentOperator, num1, num2);
     populateDisplay(result);
     num1 = result;
     num2 = null;
   }
+  currentOperator = e.target.dataset.value;
   clearDisplay = true;
 }
 
 function populateDisplay(str) {
-  displayDiv.textContent = str;
-  displayValue = Number(str);
+  displayValue =
+    Math.round((Number(str) + Number.EPSILON) * 10000000) / 10000000;
+  displayDiv.textContent = displayValue;
 }

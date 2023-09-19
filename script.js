@@ -27,7 +27,9 @@ function operate(operator, a, b) {
     case "/":
       return Math.round((divide(a, b) + Number.EPSILON) * 10000000) / 10000000;
     case "*":
-      return multiply(a, b);
+      return (
+        Math.round((multiply(a, b) + Number.EPSILON) * 10000000) / 10000000
+      );
   }
 }
 
@@ -39,6 +41,7 @@ const multiplyBtn = document.querySelector("[data-value='*']");
 const divideBtn = document.querySelector("[data-value='/']");
 const equalBtn = document.querySelector("[data-value='=']");
 const clearBtn = document.querySelector("[data-value='clear']");
+const decimalBtn = document.querySelector("[data-value='.']");
 
 addBtn.addEventListener("click", operatorClickHandler);
 subtractBtn.addEventListener("click", operatorClickHandler);
@@ -63,6 +66,12 @@ equalBtn.addEventListener("click", (e) => {
 
 clearBtn.addEventListener("click", clearState);
 
+decimalBtn.addEventListener("click", () => {
+  if (displayDiv.textContent.includes(".")) return;
+
+  updateDisplayContent(displayDiv.textContent + ".");
+});
+
 function clearState() {
   num1 = null;
   num2 = null;
@@ -83,8 +92,13 @@ function numBtnClickHandler(e) {
     updateDisplayValue(e.target.textContent);
     clearDisplay = false;
   } else {
-    updateDisplayContent(displayValue + e.target.textContent);
-    updateDisplayValue(displayValue + e.target.textContent);
+    if (displayDiv.textContent.endsWith(".")) {
+      updateDisplayContent(displayDiv.textContent + e.target.textContent);
+      updateDisplayValue(displayDiv.textContent);
+    } else {
+      updateDisplayContent(displayDiv.textContent + e.target.textContent);
+      updateDisplayValue(displayDiv.textContent + e.target.textContent);
+    }
   }
 }
 

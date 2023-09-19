@@ -25,7 +25,7 @@ function operate(operator, a, b) {
     case "-":
       return subtract(a, b);
     case "/":
-      return divide(a, b);
+      return Math.round((divide(a, b) + Number.EPSILON) * 10000000) / 10000000;
     case "*":
       return multiply(a, b);
   }
@@ -50,11 +50,12 @@ equalBtn.addEventListener("click", (e) => {
   num2 = displayValue;
   if (currentOperator == "/" && num2 == 0) {
     clearState();
-    displayDiv.textContent = "Divide by 0 SMH";
+    updateDisplayContent("Divide by 0 SMH");
     return;
   }
   let result = operate(currentOperator, num1, num2);
-  populateDisplay(result);
+  updateDisplayContent(result);
+  updateDisplayValue(result);
   num1 = null;
   num2 = null;
   clearDisplay = true;
@@ -67,7 +68,8 @@ function clearState() {
   num2 = null;
   currentOperator = null;
   clearDisplay = true;
-  populateDisplay(0);
+  updateDisplayContent(0);
+  updateDisplayValue(0);
 }
 
 const numbersBtns = document.querySelectorAll(".number-btn");
@@ -77,10 +79,12 @@ numbersBtns.forEach((numBtn) => {
 
 function numBtnClickHandler(e) {
   if (clearDisplay) {
-    populateDisplay(e.target.textContent);
+    updateDisplayContent(e.target.textContent);
+    updateDisplayValue(e.target.textContent);
     clearDisplay = false;
   } else {
-    populateDisplay(displayValue + e.target.textContent);
+    updateDisplayContent(displayValue + e.target.textContent);
+    updateDisplayValue(displayValue + e.target.textContent);
   }
 }
 
@@ -91,11 +95,12 @@ function operatorClickHandler(e) {
     num2 = displayValue;
     if (currentOperator == "/" && num2 == 0) {
       clearState();
-      displayDiv.textContent = "Divide by 0 SMH";
+      updateDisplayContent("Divide by 0 SMH");
       return;
     }
     let result = operate(currentOperator, num1, num2);
-    populateDisplay(result);
+    updateDisplayContent(result);
+    updateDisplayValue(result);
     num1 = result;
     num2 = null;
   }
@@ -103,8 +108,19 @@ function operatorClickHandler(e) {
   clearDisplay = true;
 }
 
-function populateDisplay(str) {
-  displayValue =
-    Math.round((Number(str) + Number.EPSILON) * 10000000) / 10000000;
-  displayDiv.textContent = displayValue;
+function updateDisplayContent(str) {
+  displayDiv.textContent = str;
+}
+
+function updateDisplayValue(value) {
+  if (typeof value === "string") {
+    if (value.endsWith(".")) {
+      let newValue = value.substring(0, value.length - 1);
+      displayValue = Number(newValue);
+    } else {
+      displayValue = Number(value);
+    }
+  } else if (typeof value === "number") {
+    displayValue = value;
+  }
 }

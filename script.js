@@ -42,6 +42,7 @@ const divideBtn = document.querySelector("[data-value='/']");
 const equalBtn = document.querySelector("[data-value='=']");
 const clearBtn = document.querySelector("[data-value='clear']");
 const decimalBtn = document.querySelector("[data-value='.']");
+const backspaceBtn = document.querySelector("[data-value='backspace']");
 
 addBtn.addEventListener("click", operatorClickHandler);
 subtractBtn.addEventListener("click", operatorClickHandler);
@@ -70,6 +71,20 @@ decimalBtn.addEventListener("click", () => {
   if (displayDiv.textContent.includes(".")) return;
 
   updateDisplayContent(displayDiv.textContent + ".");
+});
+
+backspaceBtn.addEventListener("click", () => {
+  if (displayDiv.textContent === "0") return;
+
+  if (displayDiv.textContent.length > 1) {
+    updateDisplayContent(
+      displayDiv.textContent.substring(0, displayDiv.textContent.length - 1)
+    );
+    updateDisplayValue(displayDiv.textContent);
+  } else {
+    updateDisplayContent(0);
+    updateDisplayValue(0);
+  }
 });
 
 function clearState() {

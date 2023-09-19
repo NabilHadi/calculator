@@ -92,13 +92,8 @@ function numBtnClickHandler(e) {
     updateDisplayValue(e.target.textContent);
     clearDisplay = false;
   } else {
-    if (displayDiv.textContent.endsWith(".")) {
-      updateDisplayContent(displayDiv.textContent + e.target.textContent);
-      updateDisplayValue(displayDiv.textContent);
-    } else {
-      updateDisplayContent(displayDiv.textContent + e.target.textContent);
-      updateDisplayValue(displayDiv.textContent + e.target.textContent);
-    }
+    updateDisplayContent(displayDiv.textContent + e.target.textContent);
+    updateDisplayValue(displayDiv.textContent);
   }
 }
 

@@ -44,10 +44,10 @@ const clearBtn = document.querySelector("[data-value='clear']");
 const decimalBtn = document.querySelector("[data-value='.']");
 const backspaceBtn = document.querySelector("[data-value='backspace']");
 
-addBtn.addEventListener("click", operatorClickHandler);
-subtractBtn.addEventListener("click", operatorClickHandler);
-multiplyBtn.addEventListener("click", operatorClickHandler);
-divideBtn.addEventListener("click", operatorClickHandler);
+addBtn.addEventListener("click", () => operatorClickHandler("+"));
+subtractBtn.addEventListener("click", () => operatorClickHandler("-"));
+multiplyBtn.addEventListener("click", () => operatorClickHandler("*"));
+divideBtn.addEventListener("click", () => operatorClickHandler("/"));
 
 equalBtn.addEventListener("click", (e) => {
   if (num1 == null || currentOperator == null) return;
@@ -67,13 +67,17 @@ equalBtn.addEventListener("click", (e) => {
 
 clearBtn.addEventListener("click", clearState);
 
-decimalBtn.addEventListener("click", () => {
+decimalBtn.addEventListener("click", decimalClickHandler);
+
+backspaceBtn.addEventListener("click", backspaceClickHandler);
+
+function decimalClickHandler() {
   if (displayDiv.textContent.includes(".")) return;
 
   updateDisplayContent(displayDiv.textContent + ".");
-});
+}
 
-backspaceBtn.addEventListener("click", () => {
+function backspaceClickHandler() {
   if (displayDiv.textContent === "0") return;
 
   if (displayDiv.textContent.length > 1) {
@@ -85,7 +89,7 @@ backspaceBtn.addEventListener("click", () => {
     updateDisplayContent(0);
     updateDisplayValue(0);
   }
-});
+}
 
 function clearState() {
   num1 = null;
@@ -112,7 +116,7 @@ function numBtnClickHandler(e) {
   }
 }
 
-function operatorClickHandler(e) {
+function operatorClickHandler(operator) {
   if (num1 == null) {
     num1 = displayValue;
   } else {
@@ -128,7 +132,7 @@ function operatorClickHandler(e) {
     num1 = result;
     num2 = null;
   }
-  currentOperator = e.target.dataset.value;
+  currentOperator = operator;
   clearDisplay = true;
 }
 

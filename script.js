@@ -49,7 +49,15 @@ subtractBtn.addEventListener("click", () => operatorClickHandler("-"));
 multiplyBtn.addEventListener("click", () => operatorClickHandler("*"));
 divideBtn.addEventListener("click", () => operatorClickHandler("/"));
 
-equalBtn.addEventListener("click", (e) => {
+equalBtn.addEventListener("click", equalBtnClickHandler);
+
+clearBtn.addEventListener("click", clearState);
+
+decimalBtn.addEventListener("click", decimalClickHandler);
+
+backspaceBtn.addEventListener("click", backspaceClickHandler);
+
+function equalBtnClickHandler(e) {
   if (num1 == null || currentOperator == null) return;
   num2 = displayValue;
   if (currentOperator == "/" && num2 == 0) {
@@ -63,13 +71,7 @@ equalBtn.addEventListener("click", (e) => {
   num1 = null;
   num2 = null;
   clearDisplay = true;
-});
-
-clearBtn.addEventListener("click", clearState);
-
-decimalBtn.addEventListener("click", decimalClickHandler);
-
-backspaceBtn.addEventListener("click", backspaceClickHandler);
+}
 
 function decimalClickHandler() {
   if (displayDiv.textContent.includes(".")) return;
@@ -102,16 +104,18 @@ function clearState() {
 
 const numbersBtns = document.querySelectorAll(".number-btn");
 numbersBtns.forEach((numBtn) => {
-  numBtn.addEventListener("click", numBtnClickHandler);
+  numBtn.addEventListener("click", () =>
+    numBtnClickHandler(numBtn.textContent)
+  );
 });
 
-function numBtnClickHandler(e) {
+function numBtnClickHandler(num) {
   if (clearDisplay) {
-    updateDisplayContent(e.target.textContent);
-    updateDisplayValue(e.target.textContent);
+    updateDisplayContent(num);
+    updateDisplayValue(num);
     clearDisplay = false;
   } else {
-    updateDisplayContent(displayDiv.textContent + e.target.textContent);
+    updateDisplayContent(displayDiv.textContent + num);
     updateDisplayValue(displayDiv.textContent);
   }
 }
@@ -152,3 +156,35 @@ function updateDisplayValue(value) {
     displayValue = value;
   }
 }
+
+window.addEventListener("keydown", (e) => {
+  switch (e.key) {
+    case "0":
+    case "1":
+    case "2":
+    case "3":
+    case "4":
+    case "5":
+    case "6":
+    case "7":
+    case "8":
+    case "9":
+      numBtnClickHandler(e.key);
+      break;
+    case "-":
+    case "*":
+    case "/":
+    case "+":
+      operatorClickHandler(e.key);
+      break;
+    case "=":
+    case "Enter":
+      equalBtnClickHandler();
+      break;
+    case "Backspace":
+      backspaceClickHandler();
+      break;
+    case ".":
+      decimalClickHandler();
+  }
+});

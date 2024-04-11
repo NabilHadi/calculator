@@ -108,6 +108,12 @@ function handleDelBtnClick() {
   updateDisplay();
 }
 
+function handleSignBtnClick() {
+  let numValue = Number(displayValue);
+  displayValue = numValue * -1;
+  updateDisplay();
+}
+
 const displayDiv = document.querySelector("#display");
 function updateDisplay() {
   if ((displayValue + "").endsWith(".")) {
@@ -138,3 +144,6 @@ dotBtn.addEventListener("click", handleDotBtnClick);
 
 const delBtn = document.querySelector("#del-btn");
 delBtn.addEventListener("click", handleDelBtnClick);
+
+const signBtn = document.querySelector("#sign-btn");
+signBtn.addEventListener("click", handleSignBtnClick);
